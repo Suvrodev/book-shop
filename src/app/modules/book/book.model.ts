@@ -2,11 +2,6 @@ import { Schema, model, connect } from "mongoose";
 import { TBook } from "./book.interface";
 
 const bookSchema = new Schema<TBook>({
-  id: {
-    type: String,
-    required: [true, "id must be needed"],
-    unique: true,
-  },
   title: {
     type: String,
     required: false,
@@ -18,7 +13,7 @@ const bookSchema = new Schema<TBook>({
   price: {
     type: Number,
     required: false,
-    min: [0, "Price must be a non-negative number"],
+    min: [0, "Price must be a positive number"],
   },
   category: {
     type: String,
@@ -39,4 +34,4 @@ const bookSchema = new Schema<TBook>({
   },
 });
 
-const Book = model<TBook>("Book", bookSchema);
+export const Book = model<TBook>("Book", bookSchema);

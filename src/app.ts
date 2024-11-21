@@ -6,8 +6,9 @@ const app: Application = express();
 app.use(express.json());
 app.use(cors());
 
-app.get("/", (req: Request, res: Response) => {
-  res.send(" Assignment-2 Server setup--Right");
-});
+const getAController = async (req: Request, res: Response) => {
+  res.send(" Run from primary Controller");
+};
+app.get("/", getAController);
 
 export default app;

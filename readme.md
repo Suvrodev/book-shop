@@ -113,3 +113,15 @@
   ```bash
   https://book-shop-production-3f3b.up.railway.app/api/orders/revenue
   ```
+
+## Technology I have used:
+
+- **Express.js**: For server-side development.
+- **MongoDB**: Database used for storing data.
+- **Mongoose**: Used for database validation.
+- **TypeScript**: Programming language used for type safety and better code maintainability.
+- **dotenv**: For managing environment variables.
+- **cors**: For handling cross-origin requests and security.
+- **nodemon**: For auto-restarting the server after code changes.
+- **zod**: For data validation.
+- **Railway**: For deploying the code to a cloud server.

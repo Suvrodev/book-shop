@@ -13,7 +13,7 @@ app.use("/api/products", BookRoutes);
 app.use("/api", OrderRoutes);
 
 const getAController = async (req: Request, res: Response) => {
-  res.send("Again using node");
+  res.send("Book store Assignment-2");
 };
 app.get("/", getAController);
 

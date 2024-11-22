@@ -50,22 +50,22 @@ const bookSchema = new Schema<TBook>(
 );
 
 //It will hide isDeleted
-bookSchema.set("toJSON", {
-  transform: (doc, ret) => {
-    delete ret.isDeleted;
-    return ret;
-  },
-});
+// bookSchema.set("toJSON", {
+//   transform: (doc, ret) => {
+//     delete ret.isDeleted;
+//     return ret;
+//   },
+// });
 
 //isDeleted will not retrive from find
-bookSchema.pre("find", function (next) {
-  this.find({ isDeleted: { $ne: true } });
-  next();
-});
+// bookSchema.pre("find", function (next) {
+//   this.find({ isDeleted: { $ne: true } });
+//   next();
+// });
 //isDeleted will not retrive from findOne
-bookSchema.pre("findOne", function (next) {
-  this.find({ isDeleted: { $ne: true } });
-  next();
-});
+// bookSchema.pre("findOne", function (next) {
+//   this.find({ isDeleted: { $ne: true } });
+//   next();
+// });
 
 export const Book = model<TBook>("Book", bookSchema);

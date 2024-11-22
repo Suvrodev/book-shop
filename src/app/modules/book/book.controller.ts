@@ -85,7 +85,7 @@ const deleteBook = async (req: Request, res: Response) => {
     res.status(200).json({
       message: "Book deleted successfully",
       status: true,
-      data: result,
+      data: {},
     });
   } catch (error) {
     //Send Response for error

@@ -31,31 +31,25 @@ const createOrderIntoDB = async (orderData: TOrder) => {
 };
 
 const calculateRevenueFromDB = async () => {
-  return "check total revenew";
-  //   const revenue = await Order.aggregate([
-  //     {
-  //       $lookup: {
-  //         from: "books", // Collection name for books
-  //         localField: "orders", // Reference field in `orders`
-  //         foreignField: "_id", // Field in `books` to match
-  //         as: "productDetails",
-  //       },
-  //     },
-  //     {
-  //       $unwind: "$productDetails", // Flatten the productDetails array
-  //     },
-  //     {
-  //       $group: {
-  //         _id: null,
-  //         totalRevenue: {
-  //           $sum: { $multiply: ["$quantity", "$productDetails.price"] }, // Multiply quantity by book price
-  //         },
-  //       },
-  //     },
-  //   ]);
+  const result = await Order.aggregate([
+    {
+      $facet: {
+        //Pipeline
+        totalRevenue: [
+          {
+            //Stage-1
+            $group: {
+              _id: null,
+              totalRevenue: { $sum: "$totalPrice" },
+            },
+          },
+        ],
+      },
+    },
+  ]);
 
-  //   // Ensure a default value if no revenue is found
-  //   return revenue[0]?.totalRevenue || 0;
+  console.log("Aggregation result:", result[0]?.totalRevenue[0]?.totalRevenue);
+  return result[0]?.totalRevenue[0]?.totalRevenue;
 };
 
 export const OrderService = {

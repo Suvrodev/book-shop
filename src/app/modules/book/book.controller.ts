@@ -5,7 +5,7 @@ import bookValidationSchema from "./book.validation";
 //Create Book
 const createBook = async (req: Request, res: Response) => {
   try {
-    const { book } = req.body;
+    const book = req.body;
 
     //book data validation using zod
     // const zodParseData = bookValidationSchema.parse(book);
@@ -36,14 +36,14 @@ const getAllBooks = async (req: Request, res: Response) => {
 
     //Send Response
     res.status(200).json({
-      status: true,
       message: "Books retrieved successfully",
+      status: true,
       data: result,
     });
   } catch (error) {
     //Send Response for error
     res.status(500).json({
-      message: "Validation failed",
+      message: "Something Went wrong",
       status: false,
       data: error,
     });
@@ -66,7 +66,7 @@ const getSingleBook = async (req: Request, res: Response) => {
   } catch (error) {
     //Send Response for error
     res.status(500).json({
-      message: "Validation failed",
+      message: "Something went wrong",
       status: false,
       data: error,
     });
@@ -96,12 +96,12 @@ const deleteBook = async (req: Request, res: Response) => {
   }
 };
 
-//Delete Book
+//Update Book
 const updateBook = async (req: Request, res: Response) => {
   try {
     console.log("Come in Update");
     const productId = req.params.productId;
-    const { book } = req.body;
+    const book = req.body;
     console.log("Update Book Data: ", book);
 
     const result = await BookServices.updateBookFromDB(productId, book);

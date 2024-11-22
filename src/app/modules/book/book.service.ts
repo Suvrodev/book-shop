@@ -30,7 +30,9 @@ const deleteBookFromDB = async (productId: string) => {
 //Update book
 const updateBookFromDB = async (productId: string, bookData: TBook) => {
   console.log("Book Data in service: ", bookData);
-  const result = await Book.findByIdAndUpdate({ _id: productId }, bookData);
+  const result = await Book.findByIdAndUpdate({ _id: productId }, bookData, {
+    new: true,
+  });
   return result;
 };
 

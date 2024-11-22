@@ -37,12 +37,12 @@ const bookSchema = new Schema<TBook>(
     quantity: {
       type: Number,
       min: [0, "Quantity cannot be a negative number"],
+      required: true,
+    },
+    inStock: {
+      type: Boolean,
       required: false,
     },
-    // inStock: {
-    //   type: Boolean,
-    //   required: false,
-    // },
     isDeleted: {
       type: Boolean,
       default: false,

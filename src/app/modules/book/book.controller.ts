@@ -59,8 +59,8 @@ const getSingleBook = async (req: Request, res: Response) => {
 
     //Send Response
     res.status(200).json({
-      status: true,
       message: "Book retrive Successfully",
+      status: true,
       data: result,
     });
   } catch (error) {
@@ -77,20 +77,21 @@ const getSingleBook = async (req: Request, res: Response) => {
 const deleteBook = async (req: Request, res: Response) => {
   try {
     const productId = req.params.productId;
+    console.log("Deleted id: ", productId);
 
     const result = await BookServices.deleteBookFromDB(productId);
 
     //Send Response
     res.status(200).json({
-      success: true,
       message: "Book deleted successfully",
-      data: result,
+      status: true,
+      data: {},
     });
   } catch (error) {
     //Send Response for error
     res.status(500).json({
-      message: "Validation failed",
-      success: false,
+      message: "Something went wrong",
+      status: false,
       data: error,
     });
   }
@@ -108,15 +109,15 @@ const updateBook = async (req: Request, res: Response) => {
 
     //Send Response
     res.status(200).json({
-      success: true,
       message: "Book updated successfully",
+      status: true,
       data: result,
     });
   } catch (error) {
     //Send Response for error
     res.status(500).json({
-      message: "Validation failed",
-      success: false,
+      message: "Something went wrong",
+      status: false,
       data: error,
     });
   }

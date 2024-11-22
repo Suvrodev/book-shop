@@ -43,10 +43,6 @@ const bookSchema = new Schema<TBook>(
       type: Boolean,
       required: false,
     },
-    isDeleted: {
-      type: Boolean,
-      default: false,
-    },
   },
   {
     timestamps: true, // Automatically adds createdAt and updatedAt fields

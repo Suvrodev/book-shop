@@ -10,7 +10,6 @@ export const bookValidationSchema = z.object({
   description: z.string().optional(),
   quantity: z.number().min(0).optional(),
   inStock: z.boolean().optional(),
-  isDeleted: z.boolean().optional(),
 });
 
 export default bookValidationSchema;

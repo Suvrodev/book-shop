@@ -13,7 +13,7 @@ app.use("/api/products", BookRoutes);
 app.use("/api", OrderRoutes);
 
 const getAController = async (req: Request, res: Response) => {
-  res.send(" Run from primary Controller-Check");
+  res.send("Again using node");
 };
 app.get("/", getAController);
 

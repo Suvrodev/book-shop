@@ -125,3 +125,5 @@
 - **nodemon**: For auto-restarting the server after code changes.
 - **zod**: For data validation.
 - **Railway**: For deploying the code to a cloud server.
+- **MongoDB Compass**: For check database more fast.
+- **No sql booster**: For check mongodb query.

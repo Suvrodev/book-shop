@@ -21,9 +21,9 @@ const getSingleBookFromDB = async (productId: string) => {
   return result;
 };
 
-//deletec book
+//delete book
 const deleteBookFromDB = async (productId: string) => {
-  const result = await Book.deleteOne({ _id: productId });
+  const result = await Book.findByIdAndDelete({ _id: productId });
   return result;
 };
 

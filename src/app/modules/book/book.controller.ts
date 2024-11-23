@@ -30,7 +30,7 @@ const createBook = async (req: Request, res: Response) => {
 };
 
 //Get All Books
-const getAllBooks = async (req: Request, res: Response): Promise<void> => {
+const getAllBooks = async (req: Request, res: Response) => {
   try {
     const { category } = req?.query;
     console.log("Category from query params: ", category);

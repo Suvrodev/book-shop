@@ -50,14 +50,24 @@
   https://book-shop-production-3f3b.up.railway.app/api/products
   ```
 
+- Users can fetch all books under a specific category.
+  **Example**  
+   `get request with query params`
+
+  ```bash
+  https://book-shop-production-3f3b.up.railway.app/api/products?category=Fiction
+  ```
+
+  - **Categories must be:** `Fiction`, `Science`, `Self-Development`, `Poetry`, or `Religious`.
+
 - Users can fetch a specific book using its unique ID stored in the database.
   **Example**  
    `get request`
+
   ```bash
   https://book-shop-production-3f3b.up.railway.app/api/products/6740af1fa6f5a2d7213d3413
   ```
-- Users can fetch all books under a specific category.
-  - **Categories must be:** `Fiction`, `Science`, `Self-Development`, `Poetry`, or `Religious`.
+
 - Users can delete any book by providing the book's specific `ID`.  
   **Example**  
   `delete request`

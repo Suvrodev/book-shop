@@ -38,8 +38,13 @@ const getSingleBookFromDB = async (productId: string) => {
 
 //delete book
 const deleteBookFromDB = async (productId: string) => {
-  const result = await Book.findByIdAndDelete({ _id: productId });
-  return result;
+  try {
+    const result = await Book.findByIdAndDelete({ _id: productId });
+    console.log("Resultdb for delete id: ", result);
+    return result;
+  } catch (error) {
+    throw new Error("Book Not Found");
+  }
 };
 
 //Update book

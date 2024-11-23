@@ -96,9 +96,17 @@ const getSingleBook = async (req: Request, res: Response) => {
 const deleteBook = async (req: Request, res: Response) => {
   try {
     const productId = req.params.productId;
-    console.log("Deleted id: ", productId);
 
     const result = await BookServices.deleteBookFromDB(productId);
+    console.log("Result for Delete id: ", result);
+
+    if (!result) {
+      res.status(404).json({
+        message: "Book Not Found",
+        status: false,
+      });
+      return;
+    }
 
     //Send Response
     res.status(200).json({
@@ -106,10 +114,10 @@ const deleteBook = async (req: Request, res: Response) => {
       status: true,
       data: {},
     });
-  } catch (error) {
+  } catch (error: any) {
     //Send Response for error
     res.status(500).json({
-      message: "Something went wrong",
+      message: error.message || "Something went wrong",
       status: false,
       data: error,
     });

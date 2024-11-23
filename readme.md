@@ -116,6 +116,7 @@
 
 ## Technology I have used:
 
+- **npm**: I used npm (Node Packege Manager) to easily install, update, and manage the required packages and libraries in the project.
 - **Express.js**: For server-side development.
 - **MongoDB**: Database used for storing data.
 - **Mongoose**: Used for database validation.

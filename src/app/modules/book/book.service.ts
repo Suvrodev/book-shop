@@ -10,9 +10,20 @@ const createBookIntoDB = async (bookData: TBook) => {
 };
 
 //get all book
-const getAllBooksFromDB = async () => {
-  const result = await Book.find();
-  return result;
+const getAllBooksFromDB = async (category: string) => {
+  try {
+    //if exist category
+    if (category) {
+      console.log("Category from Service: ", category);
+      const result = await Book.find({ category });
+      return result;
+    }
+    //if category doestn't exists
+    const result = await Book.find();
+    return result;
+  } catch (error) {
+    throw new Error("Error while fetching books");
+  }
 };
 
 //Get Single book

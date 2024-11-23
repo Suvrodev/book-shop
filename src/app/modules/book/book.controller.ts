@@ -21,7 +21,7 @@ const createBook = async (req: Request, res: Response) => {
     });
   } catch (error) {
     //Send Response for error
-    res.status(404).json({
+    res.status(500).json({
       message: "Validation failed",
       success: false,
       data: error,
@@ -30,21 +30,32 @@ const createBook = async (req: Request, res: Response) => {
 };
 
 //Get All Books
-const getAllBooks = async (req: Request, res: Response) => {
+const getAllBooks = async (req: Request, res: Response): Promise<void> => {
   try {
-    const result = await BookServices.getAllBooksFromDB();
+    const { category } = req?.query;
+    console.log("Category from query params: ", category);
+    const result = await BookServices.getAllBooksFromDB(category as string);
 
     //Send Response
+
+    if (result?.length === 0 && category) {
+      res.status(404).json({
+        message: `No books found in the category '${category}'`,
+        status: false,
+      });
+      return;
+    }
+
     res.status(200).json({
       message: "Books retrieved successfully",
       status: true,
       data: result,
     });
-  } catch (error) {
+  } catch (error: any) {
     //Send Response for error
     res.status(500).json({
       message: "Something Went wrong",
-      status: false,
+      status: error.message || false,
       data: error,
     });
   }

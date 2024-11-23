@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import { OrderService } from "./order.service";
 
+//Create order
 const createOrder = async (req: Request, res: Response) => {
   try {
     const orderData = req.body;
-    console.log("Order data from order controller: ", orderData);
 
     const result = await OrderService.createOrderIntoDB(orderData);
 
@@ -21,6 +21,7 @@ const createOrder = async (req: Request, res: Response) => {
   }
 };
 
+//Get Revenew
 const calculateRevenue = async (_req: Request, res: Response) => {
   try {
     const totalRevenue = await OrderService.calculateRevenueFromDB();

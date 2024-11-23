@@ -33,11 +33,10 @@ const createBook = async (req: Request, res: Response) => {
 const getAllBooks = async (req: Request, res: Response) => {
   try {
     const { category } = req?.query;
-    console.log("Category from query params: ", category);
+
     const result = await BookServices.getAllBooksFromDB(category as string);
 
     //Send Response
-
     if (result?.length === 0 && category) {
       res.status(404).json({
         message: `No books found in the category '${category}'`,
@@ -98,7 +97,6 @@ const deleteBook = async (req: Request, res: Response) => {
     const productId = req.params.productId;
 
     const result = await BookServices.deleteBookFromDB(productId);
-    console.log("Result for Delete id: ", result);
 
     if (!result) {
       res.status(404).json({
@@ -127,10 +125,8 @@ const deleteBook = async (req: Request, res: Response) => {
 //Update Book
 const updateBook = async (req: Request, res: Response) => {
   try {
-    console.log("Come in Update");
     const productId = req.params.productId;
     const book = req.body;
-    console.log("Update Book Data: ", book);
 
     const result = await BookServices.updateBookFromDB(productId, book);
 

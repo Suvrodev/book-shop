@@ -3,8 +3,6 @@ import { Book } from "./book.model";
 
 //Insert book
 const createBookIntoDB = async (bookData: TBook) => {
-  console.log("Create Book");
-  console.log("Book Data: ", bookData);
   const result = await Book.create(bookData);
   return result;
 };
@@ -40,7 +38,6 @@ const getSingleBookFromDB = async (productId: string) => {
 const deleteBookFromDB = async (productId: string) => {
   try {
     const result = await Book.findByIdAndDelete({ _id: productId });
-    console.log("Resultdb for delete id: ", result);
     return result;
   } catch (error) {
     throw new Error("Book Not Found");
@@ -49,7 +46,6 @@ const deleteBookFromDB = async (productId: string) => {
 
 //Update book
 const updateBookFromDB = async (productId: string, bookData: TBook) => {
-  console.log("Book Data in service: ", bookData);
   const result = await Book.findByIdAndUpdate({ _id: productId }, bookData, {
     new: true,
   });

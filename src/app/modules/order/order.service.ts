@@ -2,9 +2,9 @@ import { Order } from "./order.model";
 import { Book } from "../book/book.model";
 import { TOrder } from "./order.interface";
 
+//create order
 const createOrderIntoDB = async (orderData: TOrder) => {
   const { product, quantity } = orderData;
-  console.log({ product }, { quantity });
 
   // Fetch the book from the database
   const book = await Book.findById(product);
@@ -30,6 +30,7 @@ const createOrderIntoDB = async (orderData: TOrder) => {
   return order;
 };
 
+//Get Revenew
 const calculateRevenueFromDB = async () => {
   const result = await Order.aggregate([
     {
@@ -48,7 +49,7 @@ const calculateRevenueFromDB = async () => {
     },
   ]);
 
-  console.log("Aggregation result:", result[0]?.totalRevenue[0]?.totalRevenue);
+  // console.log("Aggregation result:", result[0]?.totalRevenue[0]?.totalRevenue);
   return result[0]?.totalRevenue[0]?.totalRevenue;
 };
 

@@ -68,16 +68,24 @@ const getSingleBook = async (req: Request, res: Response) => {
 
     const result = await BookServices.getSingleBookFromDB(productId);
 
+    if (!result) {
+      res.status(404).json({
+        message: "Book Not Found",
+        status: false,
+      });
+      return;
+    }
+
     //Send Response
     res.status(200).json({
       message: "Book retrive Successfully",
       status: true,
       data: result,
     });
-  } catch (error) {
+  } catch (error: any) {
     //Send Response for error
-    res.status(500).json({
-      message: "Something went wrong",
+    res.status(404).json({
+      message: error.message || "Something went wrong",
       status: false,
       data: error,
     });

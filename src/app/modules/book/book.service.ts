@@ -28,8 +28,12 @@ const getAllBooksFromDB = async (category: string) => {
 
 //Get Single book
 const getSingleBookFromDB = async (productId: string) => {
-  const result = await Book.findOne({ _id: productId });
-  return result;
+  try {
+    const result = await Book.findOne({ _id: productId });
+    return result;
+  } catch (error) {
+    throw new Error("Book Not Found");
+  }
 };
 
 //delete book

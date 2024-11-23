@@ -50,7 +50,7 @@
   https://book-shop-production-3f3b.up.railway.app/api/products
   ```
 
-- Users can fetch all books under a specific category.
+- Users can fetch all books under a specific category.  
   **Example**  
    `get request with query params`
 
@@ -60,7 +60,7 @@
 
   - **Categories must be:** `Fiction`, `Science`, `Self-Development`, `Poetry`, or `Religious`.
 
-- Users can fetch a specific book using its unique ID stored in the database.
+- Users can fetch a specific book using its unique ID stored in the database.  
   **Example**  
    `get request`
 

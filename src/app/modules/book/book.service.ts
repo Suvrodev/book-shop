@@ -12,7 +12,6 @@ const getAllBooksFromDB = async (category: string) => {
   try {
     //if exist category
     if (category) {
-      console.log("Category from Service: ", category);
       const result = await Book.find({ category });
       return result;
     }

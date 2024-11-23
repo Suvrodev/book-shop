@@ -54,8 +54,8 @@ const getAllBooks = async (req: Request, res: Response) => {
     //Send Response for error
     res.status(500).json({
       message: "Something Went wrong",
-      status: error.message || false,
-      data: error,
+      status: false,
+      data: error.message || error,
     });
   }
 };

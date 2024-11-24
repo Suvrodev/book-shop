@@ -50,12 +50,24 @@
   https://book-shop-production-3f3b.up.railway.app/api/products
   ```
 
-- Users can fetch all books under a specific category.  
+- Users can fetch all books under a specific category or title or author  
   **Example**  
    `get request with query params`
 
   ```bash
-  https://book-shop-production-3f3b.up.railway.app/api/products?category=Fiction
+  https://book-shop-production-3f3b.up.railway.app/api/products?searchTerm=Gitanjali
+  ```
+
+  or,
+
+  ```bash
+  https://book-shop-production-3f3b.up.railway.app/api/products?searchTerm=Kazi Nazrul Islam
+  ```
+
+  or,
+
+  ```bash
+  https://book-shop-production-3f3b.up.railway.app/api/products?searchTerm=Fiction
   ```
 
   - **Categories must be:** `Fiction`, `Science`, `Self-Development`, `Poetry`, or `Religious`.

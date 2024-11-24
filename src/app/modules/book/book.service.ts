@@ -19,11 +19,16 @@ const getAllBooksFromDB = async (searchTerm: string | null) => {
         { title: searchTerm }, // Strict match for title
         { author: searchTerm }, // Strict match for author
       ];
+
+      // Fetch results from the database
+      const result = await Book.find(query);
+      return result;
     }
 
-    // Fetch results from the database
-    const result = await Book.find(query);
-    return result;
+    if (!searchTerm) {
+      const result = await Book.find();
+      return result;
+    }
   } catch (error) {
     throw new Error("Error while fetching books");
   }

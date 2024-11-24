@@ -29,29 +29,31 @@ const createBook = async (req: Request, res: Response) => {
   }
 };
 
-//Get All Books
+// Get All Books
 const getAllBooks = async (req: Request, res: Response) => {
   try {
-    const { category } = req?.query;
+    const { searchTerm } = req.query; // Extract searchTerm from query parameters
 
-    const result = await BookServices.getAllBooksFromDB(category as string);
+    // Fetch results using the service
+    const result = await BookServices.getAllBooksFromDB(searchTerm as string);
 
-    //Send Response
-    if (result?.length === 0 && category) {
+    // Check if no matching books found
+    if (result?.length === 0 && searchTerm) {
       res.status(404).json({
-        message: `No books found in the category '${category}'`,
+        message: `No books found matching the search term '${searchTerm}'`,
         status: false,
       });
       return;
     }
 
+    // Send response with the results
     res.status(200).json({
       message: "Books retrieved successfully",
       status: true,
       data: result,
     });
   } catch (error: any) {
-    //Send Response for error
+    // Send error response
     res.status(500).json({
       message: "Something Went wrong",
       status: false,

@@ -7,16 +7,22 @@ const createBookIntoDB = async (bookData: TBook) => {
   return result;
 };
 
-//get all book
-const getAllBooksFromDB = async (category: string) => {
+// Get all books with strict search
+const getAllBooksFromDB = async (searchTerm: string | null) => {
   try {
-    //if exist category
-    if (category) {
-      const result = await Book.find({ category });
-      return result;
+    // Build a dynamic query object
+    const query: any = {};
+
+    if (searchTerm) {
+      query.$or = [
+        { category: searchTerm }, // Strict match for category
+        { title: searchTerm }, // Strict match for title
+        { author: searchTerm }, // Strict match for author
+      ];
     }
-    //if category doestn't exists
-    const result = await Book.find();
+
+    // Fetch results from the database
+    const result = await Book.find(query);
     return result;
   } catch (error) {
     throw new Error("Error while fetching books");

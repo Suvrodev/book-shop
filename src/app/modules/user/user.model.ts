@@ -10,7 +10,7 @@ const userSchema = new Schema<TUser>(
     email: {
       type: String,
       required: [true, "Email Must be required"],
-      unique: [true, "This email already Exists"],
+      // unique: [true, "This email already Exists"],
       lowercase: true,
       trim: true,
     },
@@ -56,6 +56,7 @@ userSchema.pre("save", async function (next) {
     Number(config.bcrypt_salt_rounds)
   );
   next();
+  // console.log("Now This: ", this);
 });
 
 export const userModel = model<TUser>("users", userSchema);

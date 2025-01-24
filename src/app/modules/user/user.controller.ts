@@ -4,6 +4,7 @@ import { userServices } from "./user.service";
 ///Register User
 const registerUser: RequestHandler = async (req, res, next) => {
   try {
+    console.log("Fucking USer data: ", req.body);
     const userData = req.body;
     const result = await userServices.registerUserIntoDB(userData);
 

@@ -4,7 +4,7 @@ import { AuthServices } from "./auth.service";
 //Login User
 const loginUser: RequestHandler = async (req, res, next) => {
   try {
-    console.log("Come Data to Login: ", req.body);
+    // console.log("Come Data to Login: ", req.body);
     const result = await AuthServices.loginUser(req.body);
 
     res.status(200).json({

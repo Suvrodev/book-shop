@@ -17,10 +17,10 @@ const router = express.Router();
 // };
 
 router.post(
-  "/",
+  "/register",
   validateRequest(userValidations.userValidationSchema),
   userControllers.registerUser
 );
-router.get("/register", userControllers.getAllUsers);
+// router.get("/register", userControllers.getAllUsers);
 
 export const userRoutes = router;

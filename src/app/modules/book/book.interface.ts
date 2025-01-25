@@ -6,6 +6,7 @@ export type TBook = {
   brand: string;
   model: string;
   price: number;
+  imageUrl: string;
   category: "Fiction" | "Science" | "SelfDevelopment" | "Poetry" | "Religious";
   description: string;
   quantity: number;

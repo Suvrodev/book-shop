@@ -24,6 +24,10 @@ const bookSchema = new Schema<TBook>(
       required: [true, "Price is required"],
       min: [0, "Price must be a positive number"],
     },
+    imageUrl: {
+      type: String,
+      required: [true, "Image is required"],
+    },
     category: {
       type: String,
       enum: {

@@ -6,6 +6,7 @@ export const bookValidationSchema = z.object({
   brand: z.string().min(1, "Brand is required"),
   model: z.string().min(1, "Model is required"),
   price: z.number().min(0, "Price must be a positive number"),
+  imageUrl: z.string().min(0, "Image must be a required"),
   category: z.enum(
     ["Fiction", "Science", "SelfDevelopment", "Poetry", "Religious"],
     {

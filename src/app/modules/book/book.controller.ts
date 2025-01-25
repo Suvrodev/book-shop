@@ -10,6 +10,7 @@ const createBook = async (req: Request, res: Response) => {
     //book data validation using zod
     // const zodParseData = bookValidationSchema.parse(book);
 
+    console.log("Come Book: ", book);
     //will call service function to send data in db
     const result = await BookServices.createBookIntoDB(book);
 

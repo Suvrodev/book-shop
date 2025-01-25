@@ -9,8 +9,8 @@ const createCartDB = async (carttData: TCart) => {
 };
 
 // Get all Cart
-const getAllCartFromDB = async () => {
-  const result = await CartModel.find();
+const getAllCartFromDB = async (id: string) => {
+  const result = await CartModel.find({ userId: id });
   return result;
 };
 

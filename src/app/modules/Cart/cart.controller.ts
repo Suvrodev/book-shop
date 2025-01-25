@@ -28,7 +28,8 @@ const createCart = async (req: Request, res: Response) => {
 // Get All Cart
 const getAllCart = async (req: Request, res: Response) => {
   try {
-    const result = await cartServices.getAllCartFromDB();
+    const id = req?.params?.id;
+    const result = await cartServices.getAllCartFromDB(id);
 
     // Send response with the results
     res.status(200).json({
@@ -54,7 +55,7 @@ const deleteCart = async (req: Request, res: Response) => {
 
     if (!result) {
       res.status(404).json({
-        message: "Book Not Found",
+        message: "Book Not Found in Cart",
         status: false,
       });
       return;

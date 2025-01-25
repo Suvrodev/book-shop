@@ -1,19 +1,27 @@
-import { Schema, model, connect } from "mongoose";
+import { Schema, model, connect, Types } from "mongoose";
 import { TBook } from "./book.interface";
 
 const bookSchema = new Schema<TBook>(
   {
     title: {
       type: String,
-      required: false,
+      required: [true, "Title is required"],
     },
     author: {
       type: String,
-      required: false,
+      required: [true, "Author is required"],
+    },
+    brand: {
+      type: String,
+      required: [true, "Brand is required"],
+    },
+    model: {
+      type: String,
+      required: [true, "Model is required"],
     },
     price: {
       type: Number,
-      required: false,
+      required: [true, "Price is required"],
       min: [0, "Price must be a positive number"],
     },
     category: {
@@ -26,22 +34,28 @@ const bookSchema = new Schema<TBook>(
           "Poetry",
           "Religious",
         ],
-        message: "{VALUE} is not a valid category",
+        message:
+          "{VALUE} is not a valid category. Allowed categories are: Fiction, Science, SelfDevelopment, Poetry, Religious",
       },
-      required: false,
+      required: [true, "Category is required"],
     },
     description: {
       type: String,
-      required: false,
+      required: [true, "Description is required"],
     },
     quantity: {
       type: Number,
       min: [0, "Quantity must be a positive number"],
-      required: true,
+      required: [true, "Quantity is required"],
     },
     inStock: {
       type: Boolean,
-      required: false,
+      required: [true, "In-stock status is required"],
+    },
+    refUser: {
+      type: Schema.Types.ObjectId,
+      required: [true, "Reference to a user is required"],
+      ref: "users",
     },
   },
   {

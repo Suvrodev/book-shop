@@ -31,7 +31,7 @@ const loginUser = async (payload: TLoginUser) => {
   // console.log("is User exists: ", isUserExists);
   //Create Token and send to the client
   const jwtPayload = {
-    // id: isUserExists.id,
+    id: isUserExists.id,
     name: isUserExists?.name,
     email: isUserExists?.email,
     role: isUserExists?.role,

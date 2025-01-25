@@ -65,6 +65,7 @@ const getAllBooks = async (req: Request, res: Response) => {
 //Get Single Book
 const getSingleBook = async (req: Request, res: Response) => {
   try {
+    console.log("Come Book: ", req.body);
     const productId = req.params.productId;
 
     const result = await BookServices.getSingleBookFromDB(productId);

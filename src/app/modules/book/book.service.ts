@@ -1,8 +1,18 @@
+import AppError from "../../errors/AppError";
+import { userModel } from "../user/user.model";
 import { TBook } from "./book.interface";
 import { Book } from "./book.model";
 
 //Insert book
 const createBookIntoDB = async (bookData: TBook) => {
+  const { refUser } = bookData;
+  console.log("Ref User: ", refUser);
+  const isUserExists = await userModel.findOne({ _id: refUser });
+  console.log("is User exists: ", isUserExists);
+  if (!isUserExists) {
+    throw new AppError(404, "Reference User not Exists");
+  }
+
   const result = await Book.create(bookData);
   return result;
 };

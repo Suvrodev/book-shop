@@ -54,6 +54,16 @@ const getSingleBookFromDB = async (productId: string) => {
   }
 };
 
+//Get Own book
+const getOwnBookFromDB = async (userId: string) => {
+  try {
+    const result = await Book.find({ refUser: userId });
+    return result;
+  } catch (error) {
+    throw new Error("Book Not Found");
+  }
+};
+
 //delete book
 const deleteBookFromDB = async (productId: string) => {
   try {
@@ -78,4 +88,5 @@ export const BookServices = {
   getSingleBookFromDB,
   deleteBookFromDB,
   updateBookFromDB,
+  getOwnBookFromDB,
 };

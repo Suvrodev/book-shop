@@ -95,6 +95,38 @@ const getSingleBook = async (req: Request, res: Response) => {
   }
 };
 
+//Get Own Book
+const getOwnBook = async (req: Request, res: Response) => {
+  try {
+    const userId = req?.params?.userId;
+    // console.log("Come user id--: ", userId);
+
+    const result = await BookServices.getOwnBookFromDB(userId);
+
+    if (!result) {
+      res.status(404).json({
+        message: "Book Not Found",
+        status: false,
+      });
+      return;
+    }
+
+    //Send Response
+    res.status(200).json({
+      message: "Book retrive Successfully",
+      status: true,
+      data: result,
+    });
+  } catch (error: any) {
+    //Send Response for error
+    res.status(404).json({
+      message: error.message || "Something went wrong",
+      status: false,
+      data: error,
+    });
+  }
+};
+
 //Delete Book
 const deleteBook = async (req: Request, res: Response) => {
   try {
@@ -156,4 +188,5 @@ export const BookControllers = {
   getSingleBook,
   deleteBook,
   updateBook,
+  getOwnBook,
 };

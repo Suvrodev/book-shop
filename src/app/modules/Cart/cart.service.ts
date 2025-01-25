@@ -10,7 +10,7 @@ const createCartDB = async (carttData: TCart) => {
 
 // Get all Cart
 const getAllCartFromDB = async (id: string) => {
-  const result = await CartModel.find({ userId: id });
+  const result = await CartModel.find({ userId: id }).populate("bookId");
   return result;
 };
 

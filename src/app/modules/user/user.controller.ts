@@ -46,7 +46,37 @@ const getAllUsers = async (req: Request, res: Response) => {
   }
 };
 
+///Update Password
+const updatePassword: RequestHandler = async (req, res, next) => {
+  try {
+    const userId = req?.params?.userId;
+    const userPassword = req.body;
+
+    const result = await userServices.updatePasswordIntoDB(
+      userId,
+      userPassword
+    );
+
+    res.status(201).json({
+      success: true,
+      message: "Password Updated Successfully",
+      statusCode: 201,
+      data: result,
+    });
+  } catch (error: any) {
+    // res.status(400).json({
+    //   success: false,
+    //   message: error.message || "Validation error",
+    //   statusCode: 400,
+    //   error: error,
+    //   stack: "error stack",
+    // });
+    next(error);
+  }
+};
+
 export const userControllers = {
   registerUser,
   getAllUsers,
+  updatePassword,
 };

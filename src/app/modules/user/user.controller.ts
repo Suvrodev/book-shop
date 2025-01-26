@@ -46,6 +46,28 @@ const getAllUsers = async (req: Request, res: Response) => {
   }
 };
 
+//delete  User
+const deleteUser = async (req: Request, res: Response) => {
+  try {
+    const id = req?.params?.id;
+    const result = await userServices.deleteUser(id);
+    res.status(201).json({
+      success: true,
+      message: "Users Deleted successfully",
+      statusCode: 201,
+      data: result,
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: "Failed to retrive students",
+      statusCode: 400,
+      error: error,
+      stack: "error stack",
+    });
+  }
+};
+
 ///Update Password
 const updatePassword: RequestHandler = async (req, res, next) => {
   try {
@@ -78,5 +100,6 @@ const updatePassword: RequestHandler = async (req, res, next) => {
 export const userControllers = {
   registerUser,
   getAllUsers,
+  deleteUser,
   updatePassword,
 };

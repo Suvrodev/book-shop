@@ -38,8 +38,8 @@ const userSchema = new Schema<TUser>(
       transform: function (_doc, ret) {
         // Remove sensitive or unnecessary fields
         delete ret.password;
-        delete ret.role;
-        delete ret.isBlocked;
+        // delete ret.role;
+        // delete ret.isBlocked;
         delete ret.createdAt;
         delete ret.updatedAt;
         delete ret.__v;

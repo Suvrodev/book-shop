@@ -10,6 +10,9 @@ router.post(
   validateRequest(userValidations.userValidationSchema),
   userControllers.registerUser
 );
+//Get All User
+router.get("/allusers", userControllers.getAllUsers);
+router.delete("/allusers/:id", userControllers.deleteUser);
 router.patch("/updatepassword/:userId", userControllers.updatePassword);
 // router.get("/register", userControllers.getAllUsers);
 

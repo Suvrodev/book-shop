@@ -22,6 +22,16 @@ const getAllUser = async () => {
   return result;
 };
 
+//deletel User from DB
+const deleteUser = async (id: string) => {
+  try {
+    const result = await userModel.findOneAndDelete({ _id: id });
+    return result;
+  } catch (error) {
+    throw new Error("USer Not Found");
+  }
+};
+
 //Update Password
 const updatePasswordIntoDB = async (userId: string, payload: IPassword) => {
   const { oldPassword, newPassword } = payload;
@@ -60,4 +70,5 @@ export const userServices = {
   registerUserIntoDB,
   getAllUser,
   updatePasswordIntoDB,
+  deleteUser,
 };

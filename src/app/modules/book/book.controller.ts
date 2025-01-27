@@ -63,6 +63,65 @@ const getAllBooks = async (req: Request, res: Response) => {
   }
 };
 
+// Get Iamges of Books
+const getImagesOfBooks = async (req: Request, res: Response) => {
+  try {
+    console.log("Image of Book");
+    const result = await BookServices.getImagesOfBookFromDB();
+
+    if (!result) {
+      res.status(404).json({
+        message: "Book Not Found",
+        status: false,
+      });
+      return;
+    }
+
+    //Send Response
+    res.status(200).json({
+      message: "Book retrive Successfully",
+      status: true,
+      data: result,
+    });
+  } catch (error: any) {
+    // Send error response
+    res.status(500).json({
+      message: "Something Went wrong",
+      status: false,
+      data: error.message || error,
+    });
+  }
+};
+
+// Get Home 6  Books
+const getHoneBook = async (req: Request, res: Response) => {
+  try {
+    const result = await BookServices.getHomeBookFromDB();
+
+    if (!result) {
+      res.status(404).json({
+        message: "Book Not Found",
+        status: false,
+      });
+      return;
+    }
+
+    //Send Response
+    res.status(200).json({
+      message: "Book retrive Successfully",
+      status: true,
+      data: result,
+    });
+  } catch (error: any) {
+    // Send error response
+    res.status(500).json({
+      message: "Something Went wrong",
+      status: false,
+      data: error.message || error,
+    });
+  }
+};
+
 //Get Single Book
 const getSingleBook = async (req: Request, res: Response) => {
   try {
@@ -189,4 +248,6 @@ export const BookControllers = {
   deleteBook,
   updateBook,
   getOwnBook,
+  getImagesOfBooks,
+  getHoneBook,
 };

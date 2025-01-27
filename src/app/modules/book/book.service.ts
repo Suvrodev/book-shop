@@ -53,6 +53,24 @@ const getSingleBookFromDB = async (productId: string) => {
     throw new Error("Book Not Found");
   }
 };
+//Get Images of book
+const getImagesOfBookFromDB = async () => {
+  try {
+    const result = await Book.find().select("imageUrl").limit(10);
+    return result;
+  } catch (error) {
+    throw new Error("Book Not Found");
+  }
+};
+//Get Home book
+const getHomeBookFromDB = async () => {
+  try {
+    const result = await Book.find().sort({ createdAt: -1 }).limit(6);
+    return result;
+  } catch (error) {
+    throw new Error("Book Not Found");
+  }
+};
 
 //Get Own book
 const getOwnBookFromDB = async (userId: string) => {
@@ -89,4 +107,6 @@ export const BookServices = {
   deleteBookFromDB,
   updateBookFromDB,
   getOwnBookFromDB,
+  getImagesOfBookFromDB,
+  getHomeBookFromDB,
 };

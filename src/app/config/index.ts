@@ -8,4 +8,6 @@ export default {
   database_url: process.env.DATABASE_URL,
   bcrypt_salt_rounds: process.env.BCRYPT_SALT_ROUNDS,
   jwt_access_token: process.env.JWT_ACCESS_SECREET,
+  store_id: process.env.STORE_ID,
+  store_password: process.env.STORE_PASSWORD,
 };

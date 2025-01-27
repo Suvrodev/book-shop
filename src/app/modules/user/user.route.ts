@@ -12,7 +12,11 @@ router.post(
 );
 //Get All User
 router.get("/allusers", userControllers.getAllUsers);
+//delete user
 router.delete("/allusers/:id", userControllers.deleteUser);
+//update user
+router.patch("/allusers/:id", userControllers.updateUser);
+//change password
 router.patch("/updatepassword/:userId", userControllers.updatePassword);
 // router.get("/register", userControllers.getAllUsers);
 

@@ -68,6 +68,32 @@ const deleteUser = async (req: Request, res: Response) => {
   }
 };
 
+//Update  User
+const updateUser = async (req: Request, res: Response) => {
+  try {
+    const id = req?.params?.id;
+    const body = req?.body;
+    console.log("Come id: ", id);
+    console.log("Body ", body);
+
+    const result = await userServices.updatUserIntoDB(id, body);
+    res.status(201).json({
+      success: true,
+      message: "Users Updated successfully",
+      statusCode: 201,
+      data: result,
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: "Failed to retrive students",
+      statusCode: 400,
+      error: error,
+      stack: "error stack",
+    });
+  }
+};
+
 ///Update Password
 const updatePassword: RequestHandler = async (req, res, next) => {
   try {
@@ -102,4 +128,5 @@ export const userControllers = {
   getAllUsers,
   deleteUser,
   updatePassword,
+  updateUser,
 };

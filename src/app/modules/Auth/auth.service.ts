@@ -28,10 +28,10 @@ const loginUser = async (payload: TLoginUser) => {
     throw new AppError(401, "Password do not matched");
   }
 
-  // console.log("is User exists: ", isUserExists);
+  // console.log("is User exists----: ", isUserExists);
   //Create Token and send to the client
   const jwtPayload = {
-    id: isUserExists.id,
+    _id: isUserExists._id,
     name: isUserExists?.name,
     email: isUserExists?.email,
     role: isUserExists?.role,

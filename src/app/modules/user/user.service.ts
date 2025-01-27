@@ -66,9 +66,21 @@ const updatePasswordIntoDB = async (userId: string, payload: IPassword) => {
   );
   return result;
 };
+//Update User
+const updatUserIntoDB = async (userId: string, payload: TUser) => {
+  console.log("User Id in service: ", userId);
+  console.log("payload in service", payload);
+
+  const result = await userModel.findByIdAndUpdate({ _id: userId }, payload, {
+    new: true,
+  });
+  return result;
+};
+
 export const userServices = {
   registerUserIntoDB,
   getAllUser,
   updatePasswordIntoDB,
   deleteUser,
+  updatUserIntoDB,
 };

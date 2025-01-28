@@ -13,6 +13,16 @@ const cartSchema = new Schema<TCart>(
       required: [true, "Reference to a user is required"],
       ref: "users",
     },
+    quantity: {
+      type: Number,
+      required: [true, "Quantity  have to give"],
+      ref: "users",
+    },
+    price: {
+      type: Number,
+      required: [true, "Price  have to give"],
+      ref: "users",
+    },
   },
   {
     timestamps: true, // Automatically adds createdAt and updatedAt fields

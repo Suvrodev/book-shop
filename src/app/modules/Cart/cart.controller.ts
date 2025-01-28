@@ -4,6 +4,7 @@ import { cartServices } from "./cart.service";
 //Create Cart
 const createCart = async (req: Request, res: Response) => {
   try {
+    console.log("Come Cart to add: ", req?.body);
     const newCart = req.body;
 
     //will call service function to send data in db

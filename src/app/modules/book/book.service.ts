@@ -17,7 +17,7 @@ const createBookIntoDB = async (bookData: TBook) => {
   return result;
 };
 
-// Get all books with strict search
+// Get all books with all requirement
 const getAllBooksFromDB = async (searchTerm: string | null) => {
   try {
     // Build a dynamic query object

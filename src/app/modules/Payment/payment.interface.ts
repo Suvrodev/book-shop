@@ -1,9 +1,12 @@
+import { Types } from "mongoose";
+
 export interface IPayment {
   transactionId: string;
-  cartId?: string;
-  userId?: string;
+  cartId?: Types.ObjectId;
+  userId?: Types.ObjectId;
   productId?: string;
   price: number;
   quantity: number;
-  paidStatus?: string | boolean;
+  paidStatus?: string;
+  adminApproval?: "pending" | "confirm";
 }

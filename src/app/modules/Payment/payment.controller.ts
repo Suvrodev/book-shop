@@ -5,8 +5,10 @@ import { Book } from "../book/book.model";
 import {
   checkQuantityOfBook,
   makePayment,
+  PaymentService,
   updateQuantityRemoveCartAndCheckInStock,
 } from "./payment.service";
+import { cartServices } from "../Cart/cart.service";
 const SSLCommerzPayment = require("sslcommerz-lts");
 
 const storeId = config.store_id;
@@ -86,7 +88,9 @@ export const initiatePayment = async (req: Request, res: Response) => {
           cartId,
           price,
           paidStatus: false,
+          adminApproval: "pending",
           transactionId,
+          quantity,
         };
 
         const result = makePayment(finalOrder, productId, quantity);
@@ -113,11 +117,13 @@ export const paymentSuccess = async (req: Request, res: Response) => {
   console.log("Product Quantity: ", quantity);
   console.log("Cart id: ", cartId);
 
-  const allUpdateResult = await updateQuantityRemoveCartAndCheckInStock(
-    productId as string,
-    cartId as string,
-    Number(quantity) as number
-  );
+  //   const allUpdateResult = await updateQuantityRemoveCartAndCheckInStock(
+  //     productId as string,
+  //     cartId as string,
+  //     Number(quantity) as number
+  //   );
+
+  const removeCartRes = cartServices.deleteCartFromDB(cartId as string);
 
   const result = await paymentModel.updateOne(
     { transactionId: transactionId },
@@ -128,7 +134,10 @@ export const paymentSuccess = async (req: Request, res: Response) => {
     res.redirect(`http://localhost:5173/success-pay/${transactionId}`);
   }
 };
-// Handle payment Unsuccess
+
+/**
+ * Handle Payment Unsuccess---------------------------------------------------------------------------------------
+ */
 export const paymentUnSuccess = async (req: Request, res: Response) => {
   const transactionId = req?.params?.tran_id;
 
@@ -139,4 +148,104 @@ export const paymentUnSuccess = async (req: Request, res: Response) => {
   if (result?.deletedCount) {
     res.redirect(`http://localhost:5173/unsuccess-pay/${transactionId}`);
   }
+};
+
+///Payment CRUD
+///Get All Payment by Admin
+const getAllPaymentByAdmin = async (req: Request, res: Response) => {
+  try {
+    const result = await PaymentService.getAllPaymentByAdminFromDB();
+
+    //Send Response
+    res.status(200).json({
+      message: "Payment retrive Successfully",
+      status: true,
+      data: result,
+    });
+  } catch (error: any) {
+    // Send error response
+    res.status(500).json({
+      message: "Something Went wrong",
+      status: false,
+      data: error.message || error,
+    });
+  }
+};
+
+///Get All Payment by USer
+const getAllPaymentByUser = async (req: Request, res: Response) => {
+  try {
+    const userId = req?.params?.userId;
+    const result = await PaymentService.getSpecificPaymentFromDB(userId);
+
+    //Send Response
+    res.status(200).json({
+      message: "Payment retrive Successfully",
+      status: true,
+      data: result,
+    });
+  } catch (error: any) {
+    // Send error response
+    res.status(500).json({
+      message: "Something Went wrong",
+      status: false,
+      data: error.message || error,
+    });
+  }
+};
+
+///Delete Payment
+const deletePayment = async (req: Request, res: Response) => {
+  try {
+    const paymentId = req?.params?.paymentId;
+    const result = await PaymentService.deletePaymentFromDB(paymentId);
+
+    //Send Response
+    res.status(200).json({
+      message: "Payment Deleted Successfully",
+      status: true,
+      data: result,
+    });
+  } catch (error: any) {
+    // Send error response
+    res.status(500).json({
+      message: "Something Went wrong",
+      status: false,
+      data: error.message || error,
+    });
+  }
+};
+
+///Make Confirm Payment
+const confirmPayment = async (req: Request, res: Response) => {
+  try {
+    const paymentId = req?.params?.paymentId;
+    const paymentBody = req?.body;
+    // console.log("Patment body: ", paymentBody);
+
+    const result = await PaymentService.confirmPaymentFromDB(
+      paymentId,
+      paymentBody
+    );
+
+    //Send Response
+    res.status(200).json({
+      message: "Payment confirm Successfully",
+      status: true,
+      data: result,
+    });
+  } catch (error: any) {
+    // Send error response
+    res.status(500).json({
+      message: "Something Went wrong",
+      status: false,
+      data: error.message || error,
+    });
+  }
+};
+export const PaymentController = {
+  getAllPaymentByAdmin,
+  getAllPaymentByUser,
+  deletePayment,
+  confirmPayment,
 };

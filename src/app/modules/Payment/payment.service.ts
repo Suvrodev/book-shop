@@ -1,3 +1,4 @@
+import AppError from "../../errors/AppError";
 import { Book } from "../book/book.model";
 import { CartModel } from "../Cart/cart.model";
 import { IPayment } from "./payment.interface";
@@ -72,7 +73,23 @@ const getSpecificPaymentFromDB = async (id: string) => {
 };
 
 // Delete Payment
-const deletePaymentFromDB = async (id: string) => {
+const deletePaymentFromDB = async (id: string, loggedUserId: string) => {
+  ///Check user right or wrong
+  const prvCheck = await paymentModel.findById({ _id: id });
+  if (prvCheck?.userId?.toString() !== loggedUserId) {
+    console.log("Payment user id--------: ", prvCheck?.userId?.toString());
+    console.log("logged user id------: ", loggedUserId);
+    throw new AppError(401, "You are not authorized");
+  }
+
+  //main work
+  const result = await paymentModel.findByIdAndDelete({ _id: id });
+  return result;
+};
+
+// Delete Payment
+const deletePaymentByAdminFromDB = async (id: string, loggedUserId: string) => {
+  console.log("Delete order (admin id:)", loggedUserId);
   const result = await paymentModel.findByIdAndDelete({ _id: id });
   return result;
 };
@@ -133,4 +150,5 @@ export const PaymentService = {
   getSpecificPaymentFromDB,
   deletePaymentFromDB,
   confirmPaymentFromDB,
+  deletePaymentByAdminFromDB,
 };

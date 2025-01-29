@@ -89,17 +89,36 @@ const getOwnBookFromDB = async (userId: string) => {
 };
 
 //delete book
-const deleteBookFromDB = async (productId: string) => {
-  try {
-    const result = await Book.findByIdAndDelete({ _id: productId });
-    return result;
-  } catch (error) {
-    throw new Error("Book Not Found");
+const deleteBookFromDB = async (productId: string, loggedUserId: string) => {
+  ///Check user right or wrong
+  const prvCheck = await Book.findById({ _id: productId });
+  if (prvCheck?.refUser?.toString() !== loggedUserId) {
+    console.log("Book ref id--------: ", prvCheck?.refUser?.toString());
+    console.log("logged user id------: ", loggedUserId);
+    throw new AppError(401, "You are not authorized");
   }
+
+  //main work
+  const result = await Book.findByIdAndDelete({ _id: productId });
+  return result;
 };
 
 //Update book
-const updateBookFromDB = async (productId: string, bookData: TBook) => {
+const updateBookFromDB = async (
+  productId: string,
+  bookData: TBook,
+  loggedUserId: string
+) => {
+  ///Check user right or wrong
+  const prvCheck = await Book.findById({ _id: productId });
+  if (prvCheck?.refUser?.toString() !== loggedUserId) {
+    console.log("Book ref id--------: ", prvCheck?.refUser?.toString());
+    console.log("logged user id------: ", loggedUserId);
+    throw new AppError(401, "You are not authorized");
+  }
+
+  //main work
+
   const result = await Book.findByIdAndUpdate({ _id: productId }, bookData, {
     new: true,
   });

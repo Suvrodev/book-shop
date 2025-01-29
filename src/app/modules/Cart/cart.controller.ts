@@ -1,11 +1,16 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, RequestHandler, Response } from "express";
 import { cartServices } from "./cart.service";
+import AppError from "../../errors/AppError";
 
 //Create Cart
-const createCart = async (req: Request, res: Response) => {
+const createCart: RequestHandler = async (req, res, next) => {
   try {
-    console.log("Come Cart to add: ", req?.body);
     const newCart = req.body;
+    if (newCart?.userId !== req?.user?._id) {
+      console.log("Cart user: ", newCart?.userId);
+      console.log("Logged user id: ", req?.user?._id);
+      throw new AppError(401, "You are not authorized");
+    }
 
     //will call service function to send data in db
     const result = await cartServices.createCartDB(newCart);
@@ -17,19 +22,21 @@ const createCart = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error) {
-    //Send Response for error
-    res.status(500).json({
-      message: "Validation failed",
-      success: false,
-      data: error,
-    });
+    next(error);
   }
 };
 
 // Get All Cart
-const getAllCart = async (req: Request, res: Response) => {
+const getAllCart: RequestHandler = async (req, res, next) => {
   try {
     const id = req?.params?.id;
+
+    if (id !== req?.user?._id) {
+      console.log("id: ", id);
+      console.log("Logged user: ", req?.user?._id);
+      throw new AppError(401, "You are not authorized");
+    }
+
     const result = await cartServices.getAllCartFromDB(id);
 
     // Send response with the results
@@ -39,20 +46,18 @@ const getAllCart = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error: any) {
-    // Send error response
-    res.status(500).json({
-      message: "Something Went wrong",
-      status: false,
-      data: error.message || error,
-    });
+    next(error);
   }
 };
 
 //Delete Cart
-const deleteCart = async (req: Request, res: Response) => {
+const deleteCart: RequestHandler = async (req, res, next) => {
   try {
     const productId = req.params.id;
-    const result = await cartServices.deleteCartFromDB(productId);
+    const result = await cartServices.deleteCartFromDB(
+      productId,
+      req?.user?._id
+    );
 
     if (!result) {
       res.status(404).json({
@@ -69,12 +74,7 @@ const deleteCart = async (req: Request, res: Response) => {
       data: {},
     });
   } catch (error: any) {
-    //Send Response for error
-    res.status(500).json({
-      message: error.message || "Something went wrong",
-      status: false,
-      data: error,
-    });
+    next(error);
   }
 };
 

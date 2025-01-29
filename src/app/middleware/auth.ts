@@ -6,8 +6,9 @@ const auth = (...requiredRoles: string[]) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
       const extractedToken = req.headers.authorization;
+      console.log("Extracted token: ", extractedToken);
       const token = (extractedToken as string).split(" ")[1];
-      //   console.log("Token===: ", token);
+      console.log("Token===: ", token);
 
       //if the token is sent from the client
       if (!token) {
@@ -27,7 +28,10 @@ const auth = (...requiredRoles: string[]) => {
           const role = (decoded as JwtPayload).role;
           if (requiredRoles.length > 0 && !requiredRoles.includes(role)) {
             console.log("Required Roles: ", requiredRoles);
-            throw new AppError(401, "You are not Authorized as admin");
+            throw new AppError(
+              401,
+              `You are not Authorized as ${requiredRoles}`
+            );
           }
 
           req.user = decoded as JwtPayload;

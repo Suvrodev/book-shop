@@ -1,5 +1,6 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
 import { userServices } from "./user.service";
+import AppError from "../../errors/AppError";
 
 ///Register User
 const registerUser: RequestHandler = async (req, res, next) => {
@@ -99,6 +100,11 @@ const updatePassword: RequestHandler = async (req, res, next) => {
   try {
     const userId = req?.params?.userId;
     const userPassword = req.body;
+    console.log("Logged user id : ", req?.user?._id);
+    console.log("come user id: ", userId);
+    if (req?.user?._id !== userId) {
+      throw new AppError(403, "You are not authorized");
+    }
 
     const result = await userServices.updatePasswordIntoDB(
       userId,

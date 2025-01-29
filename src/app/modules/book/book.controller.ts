@@ -1,9 +1,10 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, RequestHandler, Response } from "express";
 import { BookServices } from "./book.service";
 import bookValidationSchema from "./book.validation";
+import AppError from "../../errors/AppError";
 
 //Create Book
-const createBook = async (req: Request, res: Response) => {
+const createBook: RequestHandler = async (req, res, next) => {
   try {
     const book = req.body;
 
@@ -21,17 +22,12 @@ const createBook = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error) {
-    //Send Response for error
-    res.status(500).json({
-      message: "Validation failed",
-      success: false,
-      data: error,
-    });
+    next(error);
   }
 };
 
 // Get All Books
-const getAllBooks = async (req: Request, res: Response) => {
+const getAllBooks: RequestHandler = async (req, res, next) => {
   try {
     const { searchTerm } = req.query; // Extract searchTerm from query parameters
 
@@ -54,17 +50,12 @@ const getAllBooks = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error: any) {
-    // Send error response
-    res.status(500).json({
-      message: "Something Went wrong",
-      status: false,
-      data: error.message || error,
-    });
+    next(error);
   }
 };
 
 // Get Iamges of Books
-const getImagesOfBooks = async (req: Request, res: Response) => {
+const getImagesOfBooks: RequestHandler = async (req, res, next) => {
   try {
     console.log("Image of Book");
     const result = await BookServices.getImagesOfBookFromDB();
@@ -84,17 +75,12 @@ const getImagesOfBooks = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error: any) {
-    // Send error response
-    res.status(500).json({
-      message: "Something Went wrong",
-      status: false,
-      data: error.message || error,
-    });
+    next(error);
   }
 };
 
 // Get Home 6  Books
-const getHoneBook = async (req: Request, res: Response) => {
+const getHoneBook: RequestHandler = async (req, res, next) => {
   try {
     const result = await BookServices.getHomeBookFromDB();
 
@@ -113,17 +99,12 @@ const getHoneBook = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error: any) {
-    // Send error response
-    res.status(500).json({
-      message: "Something Went wrong",
-      status: false,
-      data: error.message || error,
-    });
+    next(error);
   }
 };
 
 //Get Single Book
-const getSingleBook = async (req: Request, res: Response) => {
+const getSingleBook: RequestHandler = async (req, res, next) => {
   try {
     console.log("Come Book: ", req.body);
     const productId = req.params.productId;
@@ -145,19 +126,19 @@ const getSingleBook = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error: any) {
-    //Send Response for error
-    res.status(404).json({
-      message: error.message || "Something went wrong",
-      status: false,
-      data: error,
-    });
+    next(error);
   }
 };
 
 //Get Own Book
-const getOwnBook = async (req: Request, res: Response) => {
+const getOwnBook: RequestHandler = async (req, res, next) => {
   try {
     const userId = req?.params?.userId;
+
+    if (req?.user?._id !== userId) {
+      throw new AppError(401, "You are not authorized");
+    }
+    +6;
     // console.log("Come user id--: ", userId);
 
     const result = await BookServices.getOwnBookFromDB(userId);
@@ -177,22 +158,19 @@ const getOwnBook = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error: any) {
-    //Send Response for error
-    res.status(404).json({
-      message: error.message || "Something went wrong",
-      status: false,
-      data: error,
-    });
+    next(error);
   }
 };
 
 //Delete Book
-const deleteBook = async (req: Request, res: Response) => {
+const deleteBook: RequestHandler = async (req, res, next) => {
   try {
     const productId = req.params.productId;
 
-    const result = await BookServices.deleteBookFromDB(productId);
-
+    const result = await BookServices.deleteBookFromDB(
+      productId,
+      req?.user?._id
+    );
     if (!result) {
       res.status(404).json({
         message: "Book Not Found",
@@ -208,22 +186,21 @@ const deleteBook = async (req: Request, res: Response) => {
       data: {},
     });
   } catch (error: any) {
-    //Send Response for error
-    res.status(500).json({
-      message: error.message || "Something went wrong",
-      status: false,
-      data: error,
-    });
+    next(error);
   }
 };
 
 //Update Book
-const updateBook = async (req: Request, res: Response) => {
+const updateBook: RequestHandler = async (req, res, next) => {
   try {
     const productId = req.params.productId;
     const book = req.body;
 
-    const result = await BookServices.updateBookFromDB(productId, book);
+    const result = await BookServices.updateBookFromDB(
+      productId,
+      book,
+      req?.user?._id
+    );
 
     //Send Response
     res.status(200).json({
@@ -232,12 +209,7 @@ const updateBook = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error) {
-    //Send Response for error
-    res.status(500).json({
-      message: "Something went wrong",
-      status: false,
-      data: error,
-    });
+    next(error);
   }
 };
 

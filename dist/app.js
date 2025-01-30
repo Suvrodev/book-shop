@@ -21,14 +21,18 @@ const app = (0, express_1.default)();
 //Parser
 app.use(express_1.default.json());
 //Cors integration
-app.use((0, cors_1.default)({ origin: ["http://localhost:5173"], credentials: true }));
-// app.use(cors({ origin: ["http://localhost:5173"] }));
+// app.use(cors({ origin: ["*"], credentials: true }));
+app.use((0, cors_1.default)({
+    origin: ["http://localhost:5173", "https://boundless-read.netlify.app"],
+    credentials: true,
+}));
+// app.use(cors({ origin: "*", credentials: true }));
 //application route
 // app.use("/api/products", BookRoutes);
 // app.use("/api", OrderRoutes);
 app.use("/api", routes_1.default);
 const getAController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    res.send("Book Shop Assignment-2");
+    res.send("Book Shop Back end Assignment-4");
 });
 app.get("/", getAController);
 //Global Error Handler

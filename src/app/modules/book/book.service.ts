@@ -106,14 +106,14 @@ export const getAllBooksFromDB = async (queryParams: BookQueryParams) => {
 
     const skip = (page - 1) * limit;
 
-    // ✅ Fix: Ensure sortOptions has correct type
     const sortOptions: Record<string, SortOrder> = {};
     if (sortBy) {
       sortOptions[sortBy] = sortOrder as SortOrder;
     }
 
+    // Example: Sort based on title, price, or quantity
     const books = await Book.find(query)
-      .sort(sortOptions) // ✅ Fix applied
+      .sort(sortOptions) // Ensure correct sorting
       .skip(skip)
       .limit(limit);
 

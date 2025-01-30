@@ -52,8 +52,8 @@ const initiatePayment = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
             total_amount: price,
             currency: "BDT",
             tran_id: transactionId, // use unique tran_id for each api call
-            success_url: `http://localhost:5000/api/payment/success/${transactionId}?productId=${productId}&quantity=${quantity}&cartId=${cartId}&userId=${userId}`,
-            fail_url: `http://localhost:5000/api/payment/fail/${transactionId}`,
+            success_url: `${config_1.default.payment_url}/api/payment/success/${transactionId}?productId=${productId}&quantity=${quantity}&cartId=${cartId}&userId=${userId}`,
+            fail_url: `${config_1.default.payment_url}/api/payment/fail/${transactionId}`,
             cancel_url: "http://localhost:3030/cancel",
             ipn_url: "http://localhost:3030/ipn",
             shipping_method: "Courier",
@@ -139,7 +139,7 @@ const paymentSuccess = (req, res) => __awaiter(void 0, void 0, void 0, function*
     const result = yield payment_model_1.paymentModel.updateOne({ transactionId: transactionId }, { paidStatus: true });
     //   console.log("After Update Result is: ", result);
     if ((result === null || result === void 0 ? void 0 : result.modifiedCount) > 0) {
-        res.redirect(`http://localhost:5173/success-pay/${transactionId}`);
+        res.redirect(`https://boundless-read.netlify.app/success-pay/${transactionId}`);
     }
 });
 exports.paymentSuccess = paymentSuccess;

@@ -77,25 +77,16 @@ const getAllBooks: RequestHandler = async (req, res, next): Promise<void> => {
 
     const result = await BookServices.getAllBooksFromDB(queryParams);
 
-    if (!result?.data.length) {
-      res.status(404).json({
-        message: "No books found matching the search criteria",
-        status: false,
-      });
-      return; // ✅ Explicitly return void
-    }
-
     res.status(200).json({
       message: "Books retrieved successfully",
       status: true,
-      data: result.data,
+      data: result.data, // Always return data, empty array if no data
       pagination: {
         totalBooks: result.totalBooks,
         currentPage: result.currentPage,
         totalPages: result.totalPages,
       },
     });
-    return; // ✅ Explicitly return void
   } catch (error: any) {
     next(error);
   }

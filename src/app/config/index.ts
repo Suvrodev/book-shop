@@ -10,4 +10,5 @@ export default {
   jwt_access_token: process.env.JWT_ACCESS_SECREET,
   store_id: process.env.STORE_ID,
   store_password: process.env.STORE_PASSWORD,
+  payment_url: process.env.PAYMENT_URL,
 };

@@ -88,13 +88,13 @@ const getAllBooksFromDB = (queryParams) => __awaiter(void 0, void 0, void 0, fun
                 query.quantity.$lte = maxQuantity;
         }
         const skip = (page - 1) * limit;
-        // ✅ Fix: Ensure sortOptions has correct type
         const sortOptions = {};
         if (sortBy) {
             sortOptions[sortBy] = sortOrder;
         }
+        // Example: Sort based on title, price, or quantity
         const books = yield book_model_1.Book.find(query)
-            .sort(sortOptions) // ✅ Fix applied
+            .sort(sortOptions) // Ensure correct sorting
             .skip(skip)
             .limit(limit);
         const totalBooks = yield book_model_1.Book.countDocuments(query);

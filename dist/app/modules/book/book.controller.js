@@ -66,24 +66,16 @@ const getAllBooks = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
             sortOrder: req.query.sortOrder === "desc" ? -1 : 1,
         };
         const result = yield book_service_1.BookServices.getAllBooksFromDB(queryParams);
-        if (!(result === null || result === void 0 ? void 0 : result.data.length)) {
-            res.status(404).json({
-                message: "No books found matching the search criteria",
-                status: false,
-            });
-            return; // ✅ Explicitly return void
-        }
         res.status(200).json({
             message: "Books retrieved successfully",
             status: true,
-            data: result.data,
+            data: result.data, // Always return data, empty array if no data
             pagination: {
                 totalBooks: result.totalBooks,
                 currentPage: result.currentPage,
                 totalPages: result.totalPages,
             },
         });
-        return; // ✅ Explicitly return void
     }
     catch (error) {
         next(error);

@@ -11,8 +11,14 @@ const app: Application = express();
 app.use(express.json());
 
 //Cors integration
-app.use(cors({ origin: ["http://localhost:5173"], credentials: true }));
-// app.use(cors({ origin: ["http://localhost:5173"] }));
+// app.use(cors({ origin: ["*"], credentials: true }));
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "https://boundless-read.netlify.app"],
+    credentials: true,
+  })
+);
+// app.use(cors({ origin: "*", credentials: true }));
 
 //application route
 // app.use("/api/products", BookRoutes);
@@ -20,7 +26,7 @@ app.use(cors({ origin: ["http://localhost:5173"], credentials: true }));
 app.use("/api", router);
 
 const getAController = async (req: Request, res: Response) => {
-  res.send("Book Shop Assignment-2");
+  res.send("Book Shop Back end Assignment-4");
 };
 app.get("/", getAController);
 

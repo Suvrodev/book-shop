@@ -1,7 +1,20 @@
+import { SortOrder } from "mongoose";
 import AppError from "../../errors/AppError";
 import { userModel } from "../user/user.model";
+import { BookQueryParams } from "./book.controller";
 import { TBook } from "./book.interface";
 import { Book } from "./book.model";
+
+interface QueryParams {
+  searchTerm?: string;
+  category?: string;
+  author?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  available?: boolean;
+  page?: number;
+  limit?: number;
+}
 
 //Insert book
 const createBookIntoDB = async (bookData: TBook) => {
@@ -17,28 +30,101 @@ const createBookIntoDB = async (bookData: TBook) => {
   return result;
 };
 
-// Get all books with all requirement
-const getAllBooksFromDB = async (searchTerm: string | null) => {
+// // Get all books with all requirement
+// const getAllBooksFromDB = async (searchTerm: string | null) => {
+//   try {
+//     // Build a dynamic query object
+//     const query: any = {};
+
+//     if (searchTerm) {
+//       query.$or = [
+//         { category: searchTerm }, // Strict match for category
+//         { title: searchTerm }, // Strict match for title
+//         { author: searchTerm }, // Strict match for author
+//       ];
+
+//       // Fetch results from the database
+//       const result = await Book.find(query);
+//       return result;
+//     }
+
+//     if (!searchTerm) {
+//       const result = await Book.find();
+//       return result;
+//     }
+//   } catch (error) {
+//     throw new Error("Error while fetching books");
+//   }
+// };
+
+///Next Get all books code
+
+export const getAllBooksFromDB = async (queryParams: BookQueryParams) => {
   try {
-    // Build a dynamic query object
+    const {
+      searchTerm,
+      category,
+      author,
+      brand,
+      model,
+      minPrice,
+      maxPrice,
+      minQuantity,
+      maxQuantity,
+      inStock,
+      page,
+      limit,
+      sortBy,
+      sortOrder,
+    } = queryParams;
+
     const query: any = {};
 
     if (searchTerm) {
       query.$or = [
-        { category: searchTerm }, // Strict match for category
-        { title: searchTerm }, // Strict match for title
-        { author: searchTerm }, // Strict match for author
+        { title: { $regex: new RegExp(searchTerm, "i") } },
+        { author: { $regex: new RegExp(searchTerm, "i") } },
+        { category: { $regex: new RegExp(searchTerm, "i") } },
       ];
-
-      // Fetch results from the database
-      const result = await Book.find(query);
-      return result;
     }
 
-    if (!searchTerm) {
-      const result = await Book.find();
-      return result;
+    if (category) query.category = category;
+    if (author) query.author = author;
+    if (brand) query.brand = brand;
+    if (model) query.model = model;
+    if (inStock !== undefined) query.inStock = inStock;
+    if (minPrice !== undefined || maxPrice !== undefined) {
+      query.price = {};
+      if (minPrice !== undefined) query.price.$gte = minPrice;
+      if (maxPrice !== undefined) query.price.$lte = maxPrice;
     }
+    if (minQuantity !== undefined || maxQuantity !== undefined) {
+      query.quantity = {};
+      if (minQuantity !== undefined) query.quantity.$gte = minQuantity;
+      if (maxQuantity !== undefined) query.quantity.$lte = maxQuantity;
+    }
+
+    const skip = (page - 1) * limit;
+
+    // ✅ Fix: Ensure sortOptions has correct type
+    const sortOptions: Record<string, SortOrder> = {};
+    if (sortBy) {
+      sortOptions[sortBy] = sortOrder as SortOrder;
+    }
+
+    const books = await Book.find(query)
+      .sort(sortOptions) // ✅ Fix applied
+      .skip(skip)
+      .limit(limit);
+
+    const totalBooks = await Book.countDocuments(query);
+
+    return {
+      data: books,
+      totalBooks,
+      currentPage: page,
+      totalPages: Math.ceil(totalBooks / limit),
+    };
   } catch (error) {
     throw new Error("Error while fetching books");
   }

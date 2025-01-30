@@ -3,6 +3,23 @@ import { BookServices } from "./book.service";
 import bookValidationSchema from "./book.validation";
 import AppError from "../../errors/AppError";
 
+export interface BookQueryParams {
+  searchTerm?: string;
+  category?: string;
+  author?: string;
+  brand?: string;
+  model?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  minQuantity?: number;
+  maxQuantity?: number;
+  inStock?: boolean;
+  page: number;
+  limit: number;
+  sortBy?: string;
+  sortOrder: number;
+}
+
 //Create Book
 const createBook: RequestHandler = async (req, res, next) => {
   try {
@@ -26,29 +43,59 @@ const createBook: RequestHandler = async (req, res, next) => {
   }
 };
 
-// Get All Books
-const getAllBooks: RequestHandler = async (req, res, next) => {
+const getAllBooks: RequestHandler = async (req, res, next): Promise<void> => {
   try {
-    const { searchTerm } = req.query; // Extract searchTerm from query parameters
+    const queryParams: BookQueryParams = {
+      searchTerm: req.query.searchTerm as string | undefined,
+      category: req.query.category as string | undefined,
+      author: req.query.author as string | undefined,
+      brand: req.query.brand as string | undefined,
+      model: req.query.model as string | undefined,
+      minPrice: req.query.minPrice
+        ? parseFloat(req.query.minPrice as string)
+        : undefined,
+      maxPrice: req.query.maxPrice
+        ? parseFloat(req.query.maxPrice as string)
+        : undefined,
+      minQuantity: req.query.minQuantity
+        ? parseInt(req.query.minQuantity as string, 10)
+        : undefined,
+      maxQuantity: req.query.maxQuantity
+        ? parseInt(req.query.maxQuantity as string, 10)
+        : undefined,
+      inStock:
+        req.query.inStock === "true"
+          ? true
+          : req.query.inStock === "false"
+          ? false
+          : undefined,
+      page: req.query.page ? parseInt(req.query.page as string, 10) : 1,
+      limit: 5, // Always return 5 books
+      sortBy: req.query.sortBy as string | undefined,
+      sortOrder: req.query.sortOrder === "desc" ? -1 : 1,
+    };
 
-    // Fetch results using the service
-    const result = await BookServices.getAllBooksFromDB(searchTerm as string);
+    const result = await BookServices.getAllBooksFromDB(queryParams);
 
-    // Check if no matching books found
-    if (result?.length === 0 && searchTerm) {
+    if (!result?.data.length) {
       res.status(404).json({
-        message: `No books found matching the search term '${searchTerm}'`,
+        message: "No books found matching the search criteria",
         status: false,
       });
-      return;
+      return; // ✅ Explicitly return void
     }
 
-    // Send response with the results
     res.status(200).json({
       message: "Books retrieved successfully",
       status: true,
-      data: result,
+      data: result.data,
+      pagination: {
+        totalBooks: result.totalBooks,
+        currentPage: result.currentPage,
+        totalPages: result.totalPages,
+      },
     });
+    return; // ✅ Explicitly return void
   } catch (error: any) {
     next(error);
   }

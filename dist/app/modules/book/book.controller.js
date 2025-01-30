@@ -61,7 +61,7 @@ const getAllBooks = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
                     ? false
                     : undefined,
             page: req.query.page ? parseInt(req.query.page, 10) : 1,
-            limit: 5, // Always return 5 books
+            limit: 10,
             sortBy: req.query.sortBy,
             sortOrder: req.query.sortOrder === "desc" ? -1 : 1,
         };

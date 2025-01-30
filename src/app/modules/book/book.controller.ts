@@ -70,7 +70,7 @@ const getAllBooks: RequestHandler = async (req, res, next): Promise<void> => {
           ? false
           : undefined,
       page: req.query.page ? parseInt(req.query.page as string, 10) : 1,
-      limit: 5, // Always return 5 books
+      limit: 10,
       sortBy: req.query.sortBy as string | undefined,
       sortOrder: req.query.sortOrder === "desc" ? -1 : 1,
     };

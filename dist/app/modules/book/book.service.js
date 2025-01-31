@@ -125,7 +125,7 @@ const getImagesOfBookFromDB = () => __awaiter(void 0, void 0, void 0, function* 
     try {
         const result = yield book_model_1.Book.find()
             .select("imageUrl")
-            .limit(10)
+            .limit(12)
             .populate("refUser");
         return result;
     }

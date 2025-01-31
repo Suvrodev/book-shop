@@ -144,7 +144,7 @@ const getImagesOfBookFromDB = async () => {
   try {
     const result = await Book.find()
       .select("imageUrl")
-      .limit(10)
+      .limit(12)
       .populate("refUser");
     return result;
   } catch (error) {

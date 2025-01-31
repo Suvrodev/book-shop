@@ -1,6 +1,6 @@
-# Welcome to my **Book Shop Project**
+# Welcome to my **Boundless Reads Book Shop Project**
 
-**Project Name: `Book Shop`**  
+**Project Name: `Boundless Reads Book Shop`**  
 **Live url: https://book-shop-server-blue.vercel.app/**  
 [`Click Here To Go Link`](https://book-shop-server-blue.vercel.app)
 

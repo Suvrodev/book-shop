@@ -289,13 +289,10 @@
 - **TypeScript**: Programming language used for type safety and better code maintainability.
 - **dotenv**: For managing environment variables.
 - **cors**: For handling cross-origin requests and security.
+- **sslcommerz**: For securated payment gateway.
 - **nodemon**: For auto-restarting the server after code changes.
 - **zod**: For data validation.
 - **Bcrypt**: For secure user password.
 - **vercel**: For deploying the code to a cloud server.
 - **MongoDB Compass**: For check database more fast.
 - **No sql booster**: For check mongodb query.
-
-```
-
-```

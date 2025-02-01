@@ -30,6 +30,12 @@ const createBookIntoDB = async (bookData: TBook) => {
   return result;
 };
 
+///Get All Book by Admin
+const getAllBookByAdmin = async () => {
+  const res = await Book.find();
+  return res;
+};
+
 // // Get all books with all requirement
 // const getAllBooksFromDB = async (searchTerm: string | null) => {
 //   try {
@@ -175,14 +181,14 @@ const getOwnBookFromDB = async (userId: string) => {
 };
 
 //delete book
-const deleteBookFromDB = async (productId: string, loggedUserId: string) => {
+const deleteBookFromDB = async (productId: string) => {
   ///Check user right or wrong
-  const prvCheck = await Book.findById({ _id: productId });
-  if (prvCheck?.refUser?.toString() !== loggedUserId) {
-    console.log("Book ref id--------: ", prvCheck?.refUser?.toString());
-    console.log("logged user id------: ", loggedUserId);
-    throw new AppError(401, "You are not authorized");
-  }
+  // const prvCheck = await Book.findById({ _id: productId });
+  // if (prvCheck?.refUser?.toString() !== loggedUserId) {
+  //   console.log("Book ref id--------: ", prvCheck?.refUser?.toString());
+  //   console.log("logged user id------: ", loggedUserId);
+  //   throw new AppError(401, "You are not authorized");
+  // }
 
   //main work
   const result = await Book.findByIdAndDelete({ _id: productId });
@@ -190,21 +196,7 @@ const deleteBookFromDB = async (productId: string, loggedUserId: string) => {
 };
 
 //Update book
-const updateBookFromDB = async (
-  productId: string,
-  bookData: TBook,
-  loggedUserId: string
-) => {
-  ///Check user right or wrong
-  const prvCheck = await Book.findById({ _id: productId });
-  if (prvCheck?.refUser?.toString() !== loggedUserId) {
-    console.log("Book ref id--------: ", prvCheck?.refUser?.toString());
-    console.log("logged user id------: ", loggedUserId);
-    throw new AppError(401, "You are not authorized");
-  }
-
-  //main work
-
+const updateBookFromDB = async (productId: string, bookData: TBook) => {
   const result = await Book.findByIdAndUpdate({ _id: productId }, bookData, {
     new: true,
   });
@@ -220,4 +212,5 @@ export const BookServices = {
   getOwnBookFromDB,
   getImagesOfBookFromDB,
   getHomeBookFromDB,
+  getAllBookByAdmin,
 };

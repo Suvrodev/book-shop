@@ -28,6 +28,11 @@ const createBookIntoDB = (bookData) => __awaiter(void 0, void 0, void 0, functio
     const result = yield book_model_1.Book.create(bookData);
     return result;
 });
+///Get All Book by Admin
+const getAllBookByAdmin = () => __awaiter(void 0, void 0, void 0, function* () {
+    const res = yield book_model_1.Book.find();
+    return res;
+});
 // // Get all books with all requirement
 // const getAllBooksFromDB = async (searchTerm: string | null) => {
 //   try {
@@ -157,30 +162,20 @@ const getOwnBookFromDB = (userId) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 //delete book
-const deleteBookFromDB = (productId, loggedUserId) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b;
+const deleteBookFromDB = (productId) => __awaiter(void 0, void 0, void 0, function* () {
     ///Check user right or wrong
-    const prvCheck = yield book_model_1.Book.findById({ _id: productId });
-    if (((_a = prvCheck === null || prvCheck === void 0 ? void 0 : prvCheck.refUser) === null || _a === void 0 ? void 0 : _a.toString()) !== loggedUserId) {
-        console.log("Book ref id--------: ", (_b = prvCheck === null || prvCheck === void 0 ? void 0 : prvCheck.refUser) === null || _b === void 0 ? void 0 : _b.toString());
-        console.log("logged user id------: ", loggedUserId);
-        throw new AppError_1.default(401, "You are not authorized");
-    }
+    // const prvCheck = await Book.findById({ _id: productId });
+    // if (prvCheck?.refUser?.toString() !== loggedUserId) {
+    //   console.log("Book ref id--------: ", prvCheck?.refUser?.toString());
+    //   console.log("logged user id------: ", loggedUserId);
+    //   throw new AppError(401, "You are not authorized");
+    // }
     //main work
     const result = yield book_model_1.Book.findByIdAndDelete({ _id: productId });
     return result;
 });
 //Update book
-const updateBookFromDB = (productId, bookData, loggedUserId) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b;
-    ///Check user right or wrong
-    const prvCheck = yield book_model_1.Book.findById({ _id: productId });
-    if (((_a = prvCheck === null || prvCheck === void 0 ? void 0 : prvCheck.refUser) === null || _a === void 0 ? void 0 : _a.toString()) !== loggedUserId) {
-        console.log("Book ref id--------: ", (_b = prvCheck === null || prvCheck === void 0 ? void 0 : prvCheck.refUser) === null || _b === void 0 ? void 0 : _b.toString());
-        console.log("logged user id------: ", loggedUserId);
-        throw new AppError_1.default(401, "You are not authorized");
-    }
-    //main work
+const updateBookFromDB = (productId, bookData) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield book_model_1.Book.findByIdAndUpdate({ _id: productId }, bookData, {
         new: true,
     });
@@ -195,4 +190,5 @@ exports.BookServices = {
     getOwnBookFromDB,
     getImagesOfBookFromDB,
     getHomeBookFromDB,
+    getAllBookByAdmin,
 };

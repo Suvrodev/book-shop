@@ -33,7 +33,7 @@ const loginUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     //Check Password is right or wrong
     const isPasswordMatched = yield bcrypt_1.default.compare(payload === null || payload === void 0 ? void 0 : payload.password, isUserExists === null || isUserExists === void 0 ? void 0 : isUserExists.password);
     if (!isPasswordMatched) {
-        throw new AppError_1.default(401, "Password do not matched");
+        throw new AppError_1.default(401, "Password is Incorrect");
     }
     // console.log("is User exists----: ", isUserExists);
     //Create Token and send to the client

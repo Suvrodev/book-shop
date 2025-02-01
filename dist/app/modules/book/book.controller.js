@@ -25,8 +25,22 @@ const createBook = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
         //will call service function to send data in db
         const result = yield book_service_1.BookServices.createBookIntoDB(book);
         //Send Response
-        res.status(200).json({
+        res.status(201).json({
             message: "Book created successfully",
+            success: true,
+            data: result,
+        });
+    }
+    catch (error) {
+        next(error);
+    }
+});
+//Get All Book By admin
+const getAllBookByAdmin = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const result = yield book_service_1.BookServices.getAllBookByAdmin();
+        res.status(200).json({
+            message: "Book Retrive successfully",
             success: true,
             data: result,
         });
@@ -181,10 +195,9 @@ const getOwnBook = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
 });
 //Delete Book
 const deleteBook = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
     try {
         const productId = req.params.productId;
-        const result = yield book_service_1.BookServices.deleteBookFromDB(productId, (_a = req === null || req === void 0 ? void 0 : req.user) === null || _a === void 0 ? void 0 : _a._id);
+        const result = yield book_service_1.BookServices.deleteBookFromDB(productId);
         if (!result) {
             res.status(404).json({
                 message: "Book Not Found",
@@ -205,11 +218,10 @@ const deleteBook = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
 });
 //Update Book
 const updateBook = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
     try {
         const productId = req.params.productId;
         const book = req.body;
-        const result = yield book_service_1.BookServices.updateBookFromDB(productId, book, (_a = req === null || req === void 0 ? void 0 : req.user) === null || _a === void 0 ? void 0 : _a._id);
+        const result = yield book_service_1.BookServices.updateBookFromDB(productId, book);
         //Send Response
         res.status(200).json({
             message: "Book updated successfully",
@@ -230,4 +242,5 @@ exports.BookControllers = {
     getOwnBook,
     getImagesOfBooks,
     getHoneBook,
+    getAllBookByAdmin,
 };

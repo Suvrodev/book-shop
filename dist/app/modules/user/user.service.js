@@ -59,7 +59,7 @@ const updatePasswordIntoDB = (userId, payload) => __awaiter(void 0, void 0, void
     const isPasswordMatched = yield bcrypt_1.default.compare(oldPassword, isUserExists === null || isUserExists === void 0 ? void 0 : isUserExists.password);
     console.log("is Password Matched: ", isPasswordMatched);
     if (!isPasswordMatched) {
-        throw new AppError_1.default(401, "Password do not matched");
+        throw new AppError_1.default(401, "Old password is not right");
     }
     const hashNewPassword = yield bcrypt_1.default.hash(newPassword, Number(config_1.default.bcrypt_salt_rounds));
     const result = yield user_model_1.userModel.findByIdAndUpdate(userId, { password: hashNewPassword }, { new: true });

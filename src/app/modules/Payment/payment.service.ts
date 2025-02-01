@@ -18,10 +18,11 @@ export const checkQuantityOfBook = async (
   quantity: number
 ) => {
   //Check quantity of Book
-
+  console.log("Come product id for check book: ", productId);
   const targetBook = await Book.findOne({
     _id: productId,
   });
+  // console.log("Target Book: ", targetBook);
   if (!targetBook) {
     return false;
   }

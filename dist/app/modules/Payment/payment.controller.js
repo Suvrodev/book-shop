@@ -16,7 +16,6 @@ exports.PaymentController = exports.paymentUnSuccess = exports.paymentSuccess = 
 const payment_model_1 = require("./payment.model");
 const config_1 = __importDefault(require("../../config"));
 const payment_service_1 = require("./payment.service");
-const cart_service_1 = require("../Cart/cart.service");
 const AppError_1 = __importDefault(require("../../errors/AppError"));
 const SSLCommerzPayment = require("sslcommerz-lts");
 const storeId = config_1.default.store_id;
@@ -29,9 +28,9 @@ const initiatePayment = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
     var _a;
     try {
         //   console.log("Payment body: ", req.body);
-        console.log("Heat Payment-------------");
+        console.log("Heat Payment Controller-------------");
         const order = req.body;
-        //   console.log("Order---: ", order);
+        console.log("Order Data---: ", order);
         const { userId, productId, price, cartId, quantity } = req.body;
         console.log("user id: ", userId);
         console.log("product id: ", productId);
@@ -41,7 +40,9 @@ const initiatePayment = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
         if (userId !== ((_a = req === null || req === void 0 ? void 0 : req.user) === null || _a === void 0 ? void 0 : _a._id)) {
             throw new AppError_1.default(401, "You are not authorized");
         }
+        console.log("Before check quantity------------------------------------");
         const checkBookQuantity = yield (0, payment_service_1.checkQuantityOfBook)(productId, quantity);
+        console.log("After check quantity-------------------------------------");
         console.log("Check Book Quantity: ", checkBookQuantity);
         if (!checkBookQuantity) {
             res.status(400).send({ message: "Quantity is not Enough" });
@@ -52,7 +53,7 @@ const initiatePayment = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
             total_amount: price,
             currency: "BDT",
             tran_id: transactionId, // use unique tran_id for each api call
-            success_url: `${config_1.default.payment_url}/api/payment/success/${transactionId}?productId=${productId}&quantity=${quantity}&cartId=${cartId}&userId=${userId}`,
+            success_url: `${config_1.default.payment_url}/api/payment/success/${transactionId}?productId=${productId}&quantity=${quantity}&userId=${userId}`,
             fail_url: `${config_1.default.payment_url}/api/payment/fail/${transactionId}`,
             cancel_url: "http://localhost:3030/cancel",
             ipn_url: "http://localhost:3030/ipn",
@@ -126,6 +127,7 @@ const paymentSuccess = (req, res) => __awaiter(void 0, void 0, void 0, function*
     const quantity = (_c = req === null || req === void 0 ? void 0 : req.query) === null || _c === void 0 ? void 0 : _c.quantity;
     const cartId = (_d = req === null || req === void 0 ? void 0 : req.query) === null || _d === void 0 ? void 0 : _d.cartId;
     const userId = (_e = req === null || req === void 0 ? void 0 : req.query) === null || _e === void 0 ? void 0 : _e.userId;
+    console.log("Payment Success Controllerr--------------------------------------------✔️✔️");
     console.log("Product id: ", productId);
     console.log("Product Quantity: ", quantity);
     console.log("Cart id: ", cartId);
@@ -135,7 +137,10 @@ const paymentSuccess = (req, res) => __awaiter(void 0, void 0, void 0, function*
     //     cartId as string,
     //     Number(quantity) as number
     //   );
-    const removeCartRes = cart_service_1.cartServices.deleteCartFromDB(cartId, userId);
+    // const removeCartRes = cartServices.deleteCartFromDB(
+    //   cartId as string,
+    //   userId as string
+    // );
     const result = yield payment_model_1.paymentModel.updateOne({ transactionId: transactionId }, { paidStatus: true });
     //   console.log("After Update Result is: ", result);
     if ((result === null || result === void 0 ? void 0 : result.modifiedCount) > 0) {

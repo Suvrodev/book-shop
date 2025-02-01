@@ -33,8 +33,22 @@ const createBook: RequestHandler = async (req, res, next) => {
     const result = await BookServices.createBookIntoDB(book);
 
     //Send Response
-    res.status(200).json({
+    res.status(201).json({
       message: "Book created successfully",
+      success: true,
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+//Get All Book By admin
+const getAllBookByAdmin: RequestHandler = async (req, res, next) => {
+  try {
+    const result = await BookServices.getAllBookByAdmin();
+    res.status(200).json({
+      message: "Book Retrive successfully",
       success: true,
       data: result,
     });
@@ -205,10 +219,7 @@ const deleteBook: RequestHandler = async (req, res, next) => {
   try {
     const productId = req.params.productId;
 
-    const result = await BookServices.deleteBookFromDB(
-      productId,
-      req?.user?._id
-    );
+    const result = await BookServices.deleteBookFromDB(productId);
     if (!result) {
       res.status(404).json({
         message: "Book Not Found",
@@ -234,11 +245,7 @@ const updateBook: RequestHandler = async (req, res, next) => {
     const productId = req.params.productId;
     const book = req.body;
 
-    const result = await BookServices.updateBookFromDB(
-      productId,
-      book,
-      req?.user?._id
-    );
+    const result = await BookServices.updateBookFromDB(productId, book);
 
     //Send Response
     res.status(200).json({
@@ -260,4 +267,5 @@ export const BookControllers = {
   getOwnBook,
   getImagesOfBooks,
   getHoneBook,
+  getAllBookByAdmin,
 };

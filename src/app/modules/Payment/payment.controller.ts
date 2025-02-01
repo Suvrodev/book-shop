@@ -27,9 +27,9 @@ export const initiatePayment = async (
 ) => {
   try {
     //   console.log("Payment body: ", req.body);
-    console.log("Heat Payment-------------");
+    console.log("Heat Payment Controller-------------");
     const order = req.body;
-    //   console.log("Order---: ", order);
+    console.log("Order Data---: ", order);
     const { userId, productId, price, cartId, quantity } = req.body;
     console.log("user id: ", userId);
     console.log("product id: ", productId);
@@ -40,8 +40,9 @@ export const initiatePayment = async (
     if (userId !== req?.user?._id) {
       throw new AppError(401, "You are not authorized");
     }
-
+    console.log("Before check quantity------------------------------------");
     const checkBookQuantity = await checkQuantityOfBook(productId, quantity);
+    console.log("After check quantity-------------------------------------");
     console.log("Check Book Quantity: ", checkBookQuantity);
     if (!checkBookQuantity) {
       res.status(400).send({ message: "Quantity is not Enough" });
@@ -53,7 +54,7 @@ export const initiatePayment = async (
       total_amount: price,
       currency: "BDT",
       tran_id: transactionId, // use unique tran_id for each api call
-      success_url: `${config.payment_url}/api/payment/success/${transactionId}?productId=${productId}&quantity=${quantity}&cartId=${cartId}&userId=${userId}`,
+      success_url: `${config.payment_url}/api/payment/success/${transactionId}?productId=${productId}&quantity=${quantity}&userId=${userId}`,
       fail_url: `${config.payment_url}/api/payment/fail/${transactionId}`,
       cancel_url: "http://localhost:3030/cancel",
       ipn_url: "http://localhost:3030/ipn",
@@ -129,6 +130,10 @@ export const paymentSuccess = async (req: Request, res: Response) => {
   const quantity = req?.query?.quantity;
   const cartId = req?.query?.cartId;
   const userId = req?.query?.userId;
+
+  console.log(
+    "Payment Success Controllerr--------------------------------------------✔️✔️"
+  );
   console.log("Product id: ", productId);
   console.log("Product Quantity: ", quantity);
   console.log("Cart id: ", cartId);
@@ -140,10 +145,10 @@ export const paymentSuccess = async (req: Request, res: Response) => {
   //     Number(quantity) as number
   //   );
 
-  const removeCartRes = cartServices.deleteCartFromDB(
-    cartId as string,
-    userId as string
-  );
+  // const removeCartRes = cartServices.deleteCartFromDB(
+  //   cartId as string,
+  //   userId as string
+  // );
 
   const result = await paymentModel.updateOne(
     { transactionId: transactionId },

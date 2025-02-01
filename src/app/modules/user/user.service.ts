@@ -58,7 +58,7 @@ const updatePasswordIntoDB = async (userId: string, payload: IPassword) => {
   );
   console.log("is Password Matched: ", isPasswordMatched);
   if (!isPasswordMatched) {
-    throw new AppError(401, "Password do not matched");
+    throw new AppError(401, "Old password is not right");
   }
 
   const hashNewPassword = await bcrypt.hash(

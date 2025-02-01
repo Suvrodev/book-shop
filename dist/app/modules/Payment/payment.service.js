@@ -23,9 +23,11 @@ const makePayment = (finalOrder, productId, quantity) => __awaiter(void 0, void 
 exports.makePayment = makePayment;
 const checkQuantityOfBook = (productId, quantity) => __awaiter(void 0, void 0, void 0, function* () {
     //Check quantity of Book
+    console.log("Come product id for check book: ", productId);
     const targetBook = yield book_model_1.Book.findOne({
         _id: productId,
     });
+    // console.log("Target Book: ", targetBook);
     if (!targetBook) {
         return false;
     }

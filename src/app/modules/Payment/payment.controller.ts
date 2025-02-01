@@ -173,7 +173,9 @@ export const paymentUnSuccess = async (req: Request, res: Response) => {
   const result = await paymentModel.deleteOne({ transactionId: transactionId });
   console.log("After Delete Result is: ", result);
   if (result?.deletedCount) {
-    res.redirect(`http://localhost:5173/unsuccess-pay/${transactionId}`);
+    res.redirect(
+      `https://boundless-read.netlify.app/unsuccess-pay/${transactionId}`
+    );
   }
 };
 
